@@ -10,6 +10,20 @@ function concatenate(a1, a2)
   return result
 end
 
+function retry(count, inner)
+  local errMsg = nil
+  for i=1,count do
+    local f = coroutine.create(inner)
+    _, errMsg = coroutine.resume(f)
+    if not errMsg then
+      return
+    end
+  end
+  if errMsg then
+    print(errMsg)
+  end
+end
+
 -- With help from https://forums.pragprog.com/forums/351/topics/13237
 function newindex(table, key, value)
   rawset(table, key, value)
